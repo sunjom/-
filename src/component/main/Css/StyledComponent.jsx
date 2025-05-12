@@ -61,8 +61,15 @@ export const CardWrapper = styled(Card)`
 `
 export const CardActionAreaStyle = styled(CardActionArea)`
   display: flex;
+  height: 100%;
   flex-direction: column;
   justify-content: center;
+
+  & > img{
+    width: 50px;
+    margin-top: 20px;
+  }
+
 `
 
 export const CardMeidaStyle = styled(CardMedia)`

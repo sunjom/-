@@ -10,7 +10,6 @@ export default function SubscribeCard() {
           component="img"
           image="file.svg"
           alt="green iguana"
-          sx={{width:50, marginTop:2}}
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
