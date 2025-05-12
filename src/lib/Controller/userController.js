@@ -5,16 +5,34 @@ export async function RegisterUser(user){
         const client = await connectDB;
         const db = client.db('Gallery');
         const userData = db.collection('User');
+        
         if(await userData.findOne({id:user.id})){
-            return {message:"이미 존재하는 아이디입니다."};
+            return {message:"이미 존재하는 아이디입니다.",status:400};
         }
         if(await userData.findOne({email:user.email})){
-            return {message:"이미 존재하는 이메일입니다."};
+            return {message:"이미 존재하는 이메일입니다.",status:400};
         }
         if(await userData.findOne({nickName:user.nickName})){
-            return {message:"이미 존재하는 닉네임입니다."};
+            return {message:"이미 존재하는 닉네임입니다.",status:400};
         }
         const result = await userData.insertOne(user);
+        return result;
+    }catch(err){
+        console.log(err);
+        throw err;
+    }
+}
+
+export async function LoginUser(user){
+    try{
+        const client = await connectDB;
+        const db = client.db('Gallery');
+        const userData = db.collection('User');
+        const result = await userData.findOne({id:user.id, password:user.password});
+
+        if(!result){
+            return {message:"아이디 또는 비밀번호가 일치하지 않습니다."};
+        }
         return result;
     }catch(err){
         console.log(err);

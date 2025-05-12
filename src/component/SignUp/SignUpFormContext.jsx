@@ -14,36 +14,40 @@ export default function SignUpFormContext({isAgree,isLoading, setIsLoading}){
 
     const router = useRouter();
 
-    const handleNameChange = (e) =>{
+    const handleIdChange = (e) =>{
         setId(e.target.value);
+        setIdError("");
         if(e.target.validity.valid){
             setIdError(false);
         }else{
-            setIdError(true);
+            setIdError('영문으로 입력해주세요');
         }
     }
     const handlePasswordChange = (e) =>{
         setPassword(e.target.value);
+        setPasswordError("");
         if(e.target.validity.valid){
             setPasswordError(false);
         }else{
-            setPasswordError(true);
+            setPasswordError('비밀번호를 입력해주세요.(6자 이상 영문)');
         }
     }
     const handleEmailChange = (e) =>{
         setEmail(e.target.value);
+        setEmailError("");
         if(e.target.validity.valid){
             setEmailError(false);
         }else{
-            setEmailError(true);
+            setEmailError("이메일을 입력해주세요.");
         }
     }
     const handleNickNameChange = (e) =>{
         setNickName(e.target.value);
+        setNickNameError("");
         if(e.target.validity.valid){
             setNickNameError(false);
         }else{
-            setNickNameError(true);
+            setNickNameError('닉네임을 입력해주세요.');
         }
     }
 
@@ -58,6 +62,7 @@ export default function SignUpFormContext({isAgree,isLoading, setIsLoading}){
             setIsLoading(false);
             return;
         }
+
         const formData = new FormData(form);
         const user = {
             id:formData.get('id'),
@@ -65,6 +70,7 @@ export default function SignUpFormContext({isAgree,isLoading, setIsLoading}){
             email:formData.get('email'),
             nickName:formData.get('nickName'),
         }
+
         const res = await fetch('/api/SignUp',{
             method:'POST',
             body:JSON.stringify(user),
@@ -74,11 +80,19 @@ export default function SignUpFormContext({isAgree,isLoading, setIsLoading}){
         });
 
         const data = await res.json();
+
+        console.log(data);
         if(res.ok){
             alert('회원가입 완료');
             router.push('/Login');
         }else{
-            alert(data.message);
+            if(data.message.includes('아이디')){
+                setIdError(data.message);
+            }else if(data.message.includes('이메일')){
+                setEmailError(data.message);
+            }else if(data.message.includes('닉네임')){
+                setNickNameError(data.message);
+            }
             setIsLoading(false);
         }
     }
@@ -96,9 +110,9 @@ export default function SignUpFormContext({isAgree,isLoading, setIsLoading}){
                 name="id" 
                 label="아이디" 
                 variant="standard" 
-                onChange={handleNameChange}
+                onChange={handleIdChange}
                 error={idError}
-                helperText={idError ? '아이디를 입력해주세요.(영문)' : ''}
+                helperText={idError}
                 inputProps={{
                     pattern:"[A-Za-z0-9 ]+",
                 }}
@@ -112,7 +126,7 @@ export default function SignUpFormContext({isAgree,isLoading, setIsLoading}){
                 variant="standard" 
                 onChange={handlePasswordChange}
                 error={passwordError}
-                helperText={passwordError ? '비밀번호를 입력해주세요.(6자 이상 영문)' : ''}
+                helperText={passwordError}
                 inputProps={{
                     pattern:"[A-Za-z0-9~!@#$%^&*\\(\\)_+]{6,}"
                 }}
@@ -125,7 +139,7 @@ export default function SignUpFormContext({isAgree,isLoading, setIsLoading}){
                 variant="standard" 
                 onChange={handleEmailChange}
                 error={emailError}
-                helperText={emailError ? '이메일을 입력해주세요.' : ''}
+                helperText={emailError}
                 inputProps={{
                     pattern:"[A-Za-z0-9._%+\\-]+@[A-Za-z0-9.\\-]+\\.[A-Za-z]{2,}$"
                 }}
@@ -138,7 +152,7 @@ export default function SignUpFormContext({isAgree,isLoading, setIsLoading}){
                 variant="standard" 
                 onChange={handleNickNameChange}
                 error={nickNameError}
-                helperText={nickNameError ? '닉네임을 입력해주세요.' : ''}
+                helperText={nickNameError }
             />
 
             <Button 
@@ -147,13 +161,13 @@ export default function SignUpFormContext({isAgree,isLoading, setIsLoading}){
                 disabled={!isAgree || isLoading}
                 sx={{ 
                     position: 'relative',
-                    minWidth: '100px',  // 버튼의 최소 너비 설정
-                    height: '50px'      // 버튼의 높이 설정
+                    minWidth: '100px', 
+                    height: '50px'      
                 }}
             >
                 {isLoading ? (
                     <CircularProgress 
-                        size={24}        // CircularProgress 크기
+                        size={24}       
                         sx={{
                             position: 'absolute',
                             top: '50%',
