@@ -81,7 +81,6 @@ export default function SignUpFormContext({isAgree,isLoading, setIsLoading}){
 
         const data = await res.json();
 
-        console.log(data);
         if(res.ok){
             alert('회원가입 완료');
             router.push('/Login');

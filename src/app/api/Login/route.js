@@ -5,8 +5,7 @@ export async function POST(req){
     try{
         const {id,password} = await req.json();
 
-        const result = LoginUser({id,password});
-
+        const result = await LoginUser({id,password});
         if(result.message){
             return NextResponse.json({message:result.message}, {status:400});
         }

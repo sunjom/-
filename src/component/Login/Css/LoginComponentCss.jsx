@@ -5,7 +5,7 @@ import { Box } from "@mui/material";
 
 export const LoginWrapper = styled.div`
     width:100%;
-    height:60%;
+    height:70%;
     display:flex;
     justify-content:center;
     align-items: center;
@@ -46,19 +46,31 @@ export const InputWrapper = styled.div`
     align-items: center;
     gap: 20px;
 
+    & > form > div{
+        width: 40%;
+    }
+
+    & > form > div > div{
+        width: 100%;
+    }
+`
+
+export const FormWrapper = styled(Box)`
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+
     & > button{
         width: 40%;
     }
 
-    & > form{
-        width : 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 20px;
+    & > div{
+        width: 40%;
     }
 
-    & > form > div{
-        width: 40%;
+    & > div > div{
+        width: 100%;
     }
 `
