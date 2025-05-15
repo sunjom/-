@@ -2,6 +2,7 @@ import { Box, Button, CircularProgress, TextField } from "@mui/material";
 import { FormWrapper, InputWrapper } from "./Css/LoginComponentCss";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
 export default function LoginForm(){
     const [id,setId] = useState('');
     const [idError,setIdError] = useState(false);
@@ -32,7 +33,6 @@ export default function LoginForm(){
     const handleLogin = async (e) =>{
         e.preventDefault();
         setIsLoading(true);
-        console.log("QWE");
         const form = e.target;
 
         if(!form.checkValidity()){
@@ -41,30 +41,16 @@ export default function LoginForm(){
             return;
         }
 
-        const formData = new FormData(form);
-
-        const user = {
-            id:formData.get('id'),
-            password:formData.get('password'),
-        }
-
-        const res = await fetch('/api/Login',{
-            method:'POST',
-            body:JSON.stringify(user),
-            headers:{
-                'Content-Type':'application/json',
-            },
-        });
-
-        const data = await res.json();
-
-        console.log(res.status);
-        if(res.ok){
-            setError('');
-            router.push('/');
-        }else{
-            setError(data.message);
+        const res = await signIn('credentials',{
+            id,password,redirect:false,
+        })
+        console.log(res);
+        
+        if(res.error){
+            setError("아이디 또는 비밀번호가 일치하지 않습니다.");
             setIsLoading(false);
+        }else{
+            router.push('/');
         }
     }
     return(

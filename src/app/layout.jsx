@@ -4,6 +4,7 @@ import Footer from "@/component/Footer";
 
 export default function RootLayout({ children }) {
   return (
+    
     <html>
       <body>
         <Header/>

@@ -32,7 +32,7 @@ export async function LoginUser(user){
         const result = await userData.findOne({id:user.id, password:user.password});
         
         if(!result){
-            return {message:"아이디 또는 비밀번호가 일치하지 않습니다.", status:400};
+            return {message:"아이디 또는 비밀번호가 일치하지 않습니다.",status:400};
         }
         return result;
     }catch(err){
