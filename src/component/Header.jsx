@@ -9,9 +9,7 @@ import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import Autocomplete from '@mui/material/Autocomplete';
@@ -19,6 +17,8 @@ import TextField from '@mui/material/TextField';
 import { useRouter } from 'next/navigation';
 import { signOut, useSession } from 'next-auth/react';
 import { List, ListItemButton, ListItemText } from '@mui/material';
+import PersonIcon from '@mui/icons-material/Person';
+
 const pages = ['구독중인 채널', '모든 채널'];
 const settings = [
   {
@@ -246,14 +246,25 @@ function ResponsiveAppBar() {
             </Menu>                
           </Box> */}
           <Box ref={dropdownRef} style={{ position: 'relative', display: 'inline-block' }}>
-            <button onClick={handleToggle}>리스트 보기</button>
+            <button 
+              onClick={handleToggle}
+              style={{
+                background: 'none',
+                border: 'none',
+                padding: '8px',
+                cursor: 'pointer',
+                color: 'white'
+              }}
+            >
+              <PersonIcon/>
+            </button>
 
             {open && (
               <List
                 style={{
                   position: 'absolute',
                   top: '100%', 
-                  left: '-84px',
+                  left: '-123px',
                   backgroundColor: 'white',
                   border: '1px solid #ccc',
                   boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
