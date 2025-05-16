@@ -24,4 +24,23 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       }
     })
   ],
+  session:{
+    strategy:"jwt",
+    maxAge:60*60*2,
+  },
+  callbacks:{
+    async jwt({token,user}){
+      if(user){
+        token.id = user.id;
+        token.nickName = user.nickName;
+      }
+      return token;
+    },
+    async session({session,token}){
+      session.user.id = token.id as string;
+      session.user.nickName = token.nickName as string;
+      return session;
+    },
+  },
+  secret:process.env.NEXTAUTH_SECRET,
 })

@@ -2,7 +2,7 @@ import { Box, Button, CircularProgress, TextField } from "@mui/material";
 import { FormWrapper, InputWrapper } from "./Css/LoginComponentCss";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 export default function LoginForm(){
     const [id,setId] = useState('');
     const [idError,setIdError] = useState(false);
@@ -10,6 +10,7 @@ export default function LoginForm(){
     const [passwordError,setPasswordError] = useState(false);
     const [isLoading,setIsLoading] = useState(false);
     const [error,setError] = useState('');
+    const data = useSession();
 
     const router = useRouter();
 
@@ -44,7 +45,6 @@ export default function LoginForm(){
         const res = await signIn('credentials',{
             id,password,redirect:false,
         })
-        console.log(res);
         
         if(res.error){
             setError("아이디 또는 비밀번호가 일치하지 않습니다.");
@@ -52,6 +52,7 @@ export default function LoginForm(){
         }else{
             router.push('/');
         }
+        
     }
     return(
         <InputWrapper>

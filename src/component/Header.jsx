@@ -17,28 +17,76 @@ import AdbIcon from '@mui/icons-material/Adb';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import { useRouter } from 'next/navigation';
+import { signOut, useSession } from 'next-auth/react';
+import { List, ListItemButton, ListItemText } from '@mui/material';
 const pages = ['구독중인 채널', '모든 채널'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const settings = [
+  {
+    title:'Profile',
+    handler:() => {}
+  }, 
+  {
+    title:'Account',
+    handler:() => {}
+  }, 
+  {title:'Dashboard',
+    handler:() => {}
+  }, 
+  {
+    title:'Logout',
+    handler:() => {signOut({callbackUrl:'/'})}
+  }];
 
 function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
+  // const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const dropdownRef = React.useRef(null);
   const router = useRouter();
+  const data = useSession();
+  const [open, setOpen] =  React.useState(false);
+
+  React.useEffect(() => {
+    const handleClickOutside = (event) => {
+      if(dropdownRef.current && !dropdownRef.current.contains(event.target)){
+        setOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  const handleToggle = () => {
+    if(!data.data){
+      router.push('/Login');
+      return;
+    }
+    setOpen((prev) => !prev);
+  };
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
-  const handleOpenUserMenu = (event) => {
-    router.push('/Login');
-    setAnchorElUser(event.currentTarget);
-  };
+  // const handleOpenUserMenu = (event) => {
+  //   if(!data.data){
+  //     router.push('/Login');
+  //     return;
+  //   }
+  //   setAnchorElUser(event.currentTarget);
+  // };
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
 
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
+  const handleCloseNavHandlerMenu = (handler) => {
+    setAnchorElNav(null);
+    handler();
   };
+
+  // const handleCloseUserMenu = () => {
+  //   setAnchorElUser(null);
+  // };
 
   return (
     <AppBar position="static">
@@ -167,7 +215,7 @@ function ResponsiveAppBar() {
               )}
             />
           </Box>
-          <Box sx={{ flexGrow: 0 }}>
+          {/* <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
@@ -191,11 +239,38 @@ function ResponsiveAppBar() {
               onClose={handleCloseUserMenu}
             >
               {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography sx={{ textAlign: 'center' }}>{setting}</Typography>
+                <MenuItem key={setting.title} onClick={()=>handleCloseNavHandlerMenu(setting.handler)}>
+                  <Typography sx={{ textAlign: 'center' }}>{setting.title}</Typography>
                 </MenuItem>
               ))}
-            </Menu>
+            </Menu>                
+          </Box> */}
+          <Box ref={dropdownRef} style={{ position: 'relative', display: 'inline-block' }}>
+            <button onClick={handleToggle}>리스트 보기</button>
+
+            {open && (
+              <List
+                style={{
+                  position: 'absolute',
+                  top: '100%', 
+                  left: '-84px',
+                  backgroundColor: 'white',
+                  border: '1px solid #ccc',
+                  boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                  padding: '8px 0',
+                  width: '160px',
+                  zIndex: 1000,
+                }}
+              >
+                <ListItemText sx={{ textAlign: 'center', color: 'black' }}>{data.data?.user.nickName}님</ListItemText>
+                <hr/>
+                {settings.map((setting) => (
+                <ListItemButton key={setting.title} onClick={()=>handleCloseNavHandlerMenu(setting.handler)}>
+                  <ListItemText sx={{ textAlign: 'center', color: 'black' }}>{setting.title}</ListItemText>
+                </ListItemButton>
+                ))}
+              </List>
+            )}
           </Box>
         </Toolbar>
       </Container>
