@@ -11,9 +11,8 @@ export async function POST(req){
         }
         
         const user = await RegisterUser({id,password,email,nickName});
-
         if(user.message){
-            return NextResponse.json({message:user.message}, {status:400});
+            return NextResponse.json({message:user.message.split('\n')}, {status:400});
         }
         return NextResponse.json({message:"회원가입 성공",user});
     }catch(err){

@@ -81,16 +81,19 @@ export default function SignUpFormContext({isAgree,isLoading, setIsLoading}){
 
         const data = await res.json();
 
+        console.log(data);
         if(res.ok){
             alert('회원가입 완료');
             router.push('/Login');
         }else{
-            if(data.message.includes('아이디')){
-                setIdError(data.message);
-            }else if(data.message.includes('이메일')){
-                setEmailError(data.message);
-            }else if(data.message.includes('닉네임')){
-                setNickNameError(data.message);
+            for(const message of data.message){
+                if(data.message.includes('아이디')){
+                    setIdError(message);
+                }else if(data.message.includes('이메일')){
+                    setEmailError(message);
+                }else if(data.message.includes('닉네임')){
+                    setNickNameError(message);
+                }
             }
             setIsLoading(false);
         }
