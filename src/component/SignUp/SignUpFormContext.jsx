@@ -29,7 +29,7 @@ export default function SignUpFormContext({isAgree,isLoading, setIsLoading}){
         if(e.target.validity.valid){
             setPasswordError(false);
         }else{
-            setPasswordError('비밀번호를 입력해주세요.(6자 이상 영문)');
+            setPasswordError('비밀번호를 입력해주세요.(6~16자 영문)');
         }
     }
     const handleEmailChange = (e) =>{
@@ -47,7 +47,7 @@ export default function SignUpFormContext({isAgree,isLoading, setIsLoading}){
         if(e.target.validity.valid){
             setNickNameError(false);
         }else{
-            setNickNameError('닉네임을 입력해주세요.');
+            setNickNameError('닉네임을 입력해주세요.(1~15자)');
         }
     }
 
@@ -81,21 +81,24 @@ export default function SignUpFormContext({isAgree,isLoading, setIsLoading}){
 
         const data = await res.json();
 
-        console.log(data);
-        if(res.ok){
-            alert('회원가입 완료');
-            router.push('/Login');
-        }else{
+        console.log(data.message);
+        console.log(data.message.includes('닉네임'));
+        if(data.message.length > 0){
             for(const message of data.message){
-                if(data.message.includes('아이디')){
+                if(message.includes('아이디')){
                     setIdError(message);
-                }else if(data.message.includes('이메일')){
+                }else if(message.includes('이메일')){
                     setEmailError(message);
-                }else if(data.message.includes('닉네임')){
+                }else if(message.includes('닉네임')){
                     setNickNameError(message);
+                }else{
+                    setPasswordError(message);
                 }
             }
             setIsLoading(false);
+        }else{
+            alert('회원가입 완료');
+            router.push('/Login');
         }
     }
 
