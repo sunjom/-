@@ -23,7 +23,6 @@ export async function RegisterUser(user){
         const result = await users.save();
         return result;
     }catch(err){
-        console.log(err.errors)
         if(err instanceof ZodError){
             const message = []
             for (const e of err.errors){
@@ -42,14 +41,28 @@ export async function LoginUser(user){
 
         const findUser = await User.findOne({id:user.id});
         const result = await comparePassword(user.password,findUser.password);
-        console.log(user.password,findUser.password);
+        
         if(!result){
             console.log(user.password,findUser.password);
             return {message:"아이디 또는 비밀번호가 일치하지 않습니다.",status:400};
         }
-        return result;
+        return findUser;
     }catch(err){
         console.log(err);
         throw err;
     }
+}
+
+export async function approveRequest(){
+    try{
+        await connectDB();
+        
+    }catch(err){
+        console.log(err);
+        throw err;
+    }
+}
+
+export async function rejectRequest(){
+
 }

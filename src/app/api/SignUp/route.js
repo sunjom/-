@@ -11,6 +11,7 @@ export async function POST(req){
             return NextResponse.json({message:"모든 필드를 입력해주세요."}, {status:400});
         }
         const message = [];
+        console.log(id,password,email,nickName);
         if(await User.findOne({id:id})){
             message.push("이미 존재하는 아이디입니다.");
         }
@@ -28,7 +29,7 @@ export async function POST(req){
         if(user.message){
             return NextResponse.json(user);
         }
-        
+        return NextResponse.json({message:""},{status:200});
     }catch(err){
         console.log(err);
         return NextResponse.json({message:"회원가입 실패",err}, {status:500});

@@ -70,7 +70,6 @@ export default function SignUpFormContext({isAgree,isLoading, setIsLoading}){
             email:formData.get('email'),
             nickName:formData.get('nickName'),
         }
-
         const res = await fetch('/api/SignUp',{
             method:'POST',
             body:JSON.stringify(user),
@@ -80,9 +79,7 @@ export default function SignUpFormContext({isAgree,isLoading, setIsLoading}){
         });
 
         const data = await res.json();
-
         console.log(data.message);
-        console.log(data.message.includes('닉네임'));
         if(data.message.length > 0){
             for(const message of data.message){
                 if(message.includes('아이디')){
