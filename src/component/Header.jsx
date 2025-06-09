@@ -20,22 +20,6 @@ import { List, ListItemButton, ListItemText } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
 
 const pages = ['구독중인 채널', '모든 채널'];
-const settings = [
-  {
-    title:'Profile',
-    handler:() => {}
-  }, 
-  {
-    title:'Account',
-    handler:() => {}
-  }, 
-  {title:'Dashboard',
-    handler:() => {}
-  }, 
-  {
-    title:'Logout',
-    handler:() => {signOut({callbackUrl:'/'})}
-  }];
 
 function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -44,6 +28,39 @@ function ResponsiveAppBar() {
   const router = useRouter();
   const data = useSession();
   const [open, setOpen] =  React.useState(false);
+
+  const isAdmin = data?.data?.user?.nickName ==='admin';
+
+  const settings = isAdmin ? [{
+    title:'Profile',
+    handler:() => {}
+    }, 
+    {
+      title:'채널 생성 목록',
+      handler:() => {}
+    }, 
+    {title:'채널생성',
+      handler:() => {router.push('/CreateChannel')}
+    },
+    {
+      title:'Logout',
+      handler:() => {signOut({callbackUrl:'/'})}
+    }] :[
+  {
+    title:'Profile',
+    handler:() => {}
+  }, 
+  {
+    title:'Account',
+    handler:() => {}
+  }, 
+  {title:'채널생성',
+    handler:() => {router.push('/CreateChannel')}
+  },
+  {
+    title:'Logout',
+    handler:() => {signOut({callbackUrl:'/'})}
+  }]
 
   React.useEffect(() => {
     const handleClickOutside = (event) => {

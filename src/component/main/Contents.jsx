@@ -10,6 +10,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { useRouter } from 'next/navigation';
+import { Pagination, Stack } from '@mui/material';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -57,27 +58,32 @@ export default function Contents() {
     }
 
   return (
-    <TableContainer component={Paper} sx={{ width: '80%' }}>
-      <Table aria-label="customized table">
-        <TableHead>
-          <TableRow>
-            <StyledTableCell onClick={() => handleClick('/')}>
-                <p style={{fontSize: '1.5rem', margin:0, fontWeight:'bold', cursor:'pointer'}}>
-                    마비노기
-                </p>
-            </StyledTableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map((row) => (
-            <StyledTableRow key={row.name} onClick={() => handleClick(row.path)}>
-              <StyledTableCell component="th" scope="row">
-                <p style={{fontSize: '1rem', margin:0}}>{row.name}</p>
+    <>
+      <TableContainer component={Paper} sx={{ width: '80%' }}>
+        <Table aria-label="customized table">
+          <TableHead>
+            <TableRow>
+              <StyledTableCell onClick={() => handleClick('/')}>
+                  <p style={{fontSize: '1.5rem', margin:0, fontWeight:'bold', cursor:'pointer'}}>
+                      마비노기
+                  </p>
               </StyledTableCell>
-            </StyledTableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {rows.map((row) => (
+              <StyledTableRow key={row.name} onClick={() => handleClick(row.path)}>
+                <StyledTableCell component="th" scope="row">
+                  <p style={{fontSize: '1rem', margin:0}}>{row.name}</p>
+                </StyledTableCell>
+              </StyledTableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <Stack spacing={2} sx={{marginTop: '20px'}}>
+        <Pagination count={10} variant="outlined" shape="rounded" />
+      </Stack>
+    </>
   );
 }
