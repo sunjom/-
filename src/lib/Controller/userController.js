@@ -19,7 +19,7 @@ export async function RegisterUser(user){
             nickName,
             email,
             subscribes:[],
-        })
+        });
         const result = await users.save();
         return result;
     }catch(err){
