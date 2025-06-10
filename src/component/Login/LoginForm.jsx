@@ -2,7 +2,7 @@ import { Box, Button, CircularProgress, TextField } from "@mui/material";
 import { FormWrapper, InputWrapper } from "./Css/LoginComponentCss";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { signIn, useSession } from "next-auth/react";
+import { signIn } from "next-auth/react";
 export default function LoginForm(){
     const [id,setId] = useState('');
     const [idError,setIdError] = useState(false);
@@ -10,7 +10,6 @@ export default function LoginForm(){
     const [passwordError,setPasswordError] = useState(false);
     const [isLoading,setIsLoading] = useState(false);
     const [error,setError] = useState('');
-    const data = useSession();
 
     const router = useRouter();
 
@@ -76,6 +75,7 @@ export default function LoginForm(){
                     required
                     value={password}
                     name="password" 
+                    type="password"
                     label="비밀번호" 
                     variant="standard" 
                     onChange={handlePasswordChange} 

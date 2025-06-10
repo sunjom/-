@@ -4,11 +4,10 @@ import SubscribeCard from "./SubscribeCard";
 
 export default function Subscribe(){
 
-    const data = useSession();
-    console.log(data);
+    const {data} = useSession();
     return(
         <>
-            {data.data ? 
+            {data ? 
                 (
                 <SubScribeWrapper>
                     <p>구독한 채널 바로가기</p>

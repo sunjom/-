@@ -26,11 +26,10 @@ function ResponsiveAppBar() {
   // const [anchorElUser, setAnchorElUser] = React.useState(null);
   const dropdownRef = React.useRef(null);
   const router = useRouter();
-  const data = useSession();
+  const {data} = useSession();
   const [open, setOpen] =  React.useState(false);
 
-  const isAdmin = data?.data?.user?.nickName ==='admin';
-
+  const isAdmin = data?.user?.nickName ==='admin';
   const settings = isAdmin ? [{
     title:'Profile',
     handler:() => {}
@@ -75,7 +74,7 @@ function ResponsiveAppBar() {
   }, []);
 
   const handleToggle = () => {
-    if(!data.data){
+    if(!data){
       router.push('/Login');
       return;
     }
@@ -290,7 +289,7 @@ function ResponsiveAppBar() {
                   zIndex: 1000,
                 }}
               >
-                <ListItemText sx={{ textAlign: 'center', color: 'black' }}>{data.data?.user.nickName}님</ListItemText>
+                <ListItemText sx={{ textAlign: 'center', color: 'black' }}>{data?.user.nickName}님</ListItemText>
                 <hr/>
                 {settings.map((setting) => (
                 <ListItemButton key={setting.title} onClick={()=>handleCloseNavHandlerMenu(setting.handler)}>
