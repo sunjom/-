@@ -1,4 +1,4 @@
-import { LoginUser } from "@/lib/Controller/userController";
+import { LoginUser } from "@/lib/Controller/UserController";
 import { NextResponse } from "next/server";
 
 export async function POST(req){

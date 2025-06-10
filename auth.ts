@@ -1,8 +1,8 @@
 import NextAuth from "next-auth"
 import Credentials from "next-auth/providers/credentials"
-import { LoginUser } from "./src/lib/Controller/userController";
+import { LoginUser } from "./src/lib/Controller/UserController";
 import {MongoDBAdapter} from '@auth/mongodb-adapter'
-import { connectDB } from "./src/lib/databases";
+import { connectDB } from "./src/lib/mongooseDB";
 import { UserSchema } from "@/lib/types/zod";
 //import {saltAndHashPassword} from "@/utils/password" hash 함수.
 export const { handlers, signIn, signOut, auth } = NextAuth({
