@@ -1,17 +1,17 @@
-import { RegisterUser } from "@/lib/Controller/userController";
-import { connectDB } from "@/lib/databases";
+import { RegisterUser } from "@/lib/Controller/UserController";
 import { User } from "@/lib/Model/user";
+import { connectDB } from "@/lib/mongooseDB";
 import { NextResponse } from "next/server";
 export async function POST(req){
     try{
-        await connectDB;
+        await connectDB();
         const {id,password,email,nickName} = await req.json();
 
         if(id === '' || password === '' || email === '' || nickName === ''){
             return NextResponse.json({message:"모든 필드를 입력해주세요."}, {status:400});
         }
         const message = [];
-        console.log(id,password,email,nickName);
+
         if(await User.findOne({id:id})){
             message.push("이미 존재하는 아이디입니다.");
         }
