@@ -1,4 +1,4 @@
-const { Schema, model } = require("mongoose");
+const { Schema, model, models } = require("mongoose");
 
 
 const PostSchema = new Schema({
@@ -11,6 +11,10 @@ const PostSchema = new Schema({
         type:Date,
         default:Date.now,
     },
+    channel:{
+        tyep:Schema.Types.ObjectId,
+        ref:'Channel',
+    }
 })
 
-export const Post = model('Post',PostSchema);
+export const Post = models.Post || model('Post',PostSchema);

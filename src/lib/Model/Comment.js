@@ -1,4 +1,4 @@
-const { Schema, model } = require("mongoose");
+const { Schema, model, models } = require("mongoose");
 
 const CommentSchema = new Schema({
     author:String,
@@ -10,4 +10,4 @@ const CommentSchema = new Schema({
     }
 })
 
-export const Comment = model('Comment',CommentSchema);
+export const Comment = models.Comment || model('Comment',CommentSchema);
