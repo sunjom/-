@@ -12,3 +12,10 @@ export const UserSchema = object({
     .min(1,"이메일을 입력해주세요.")
     .email("이메일 형식으로 입력해주세요."),  
 })
+
+export const ChannelSchema = object({
+    title:z.string({required_error:"제목을 입력해주세요."}),
+    description:z.string({required_error:"설명을 입력해주세요"}),
+    url:z.string({required_error:"URL을 입력해주세요."}),
+    owner:z.string({required_error:"로그인 후 생서해주세요!!"}),
+})
